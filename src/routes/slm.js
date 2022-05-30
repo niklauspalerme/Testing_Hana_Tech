@@ -3,24 +3,39 @@
 
 
 const { Router } = require("express");
+const dbClass = require("sap-hdbext-promisfied")
 const { check } = require('express-validator');
 const { validarCampos } = require("../middlewares/validar-campos");
 const router = Router();
 
 
 /////////////////////////////////////////////////////////////
-// Implementación
+// Implementation
 
 
-router.post('/', (req,resp) =>{
+router.post('/',  async (req,res) =>{
 
-    const client = req.db;
 
-    client.exec("SELECT TOP 1 * FROM NA_CUSTOM.AMZN_VENDORCENTRAL_KC_ECOM_DLY_SALES_DIAGNOSTIC_CA_TMP", (err, rs) => {
-        if (err) 
-            return resp.end('Error: ' + err.message);
-        resp.end(JSON.stringify(rs));
-        });
+    try {
+        
+        let db = new dbClass(req.db);
+
+        const statement = await db.preparePromisified("SELECT TOP 1 * FROM NA_CUSTOM.AMZN_VENDORCENTRAL_KC_ECOM_DLY_SALES_DIAGNOSTIC_CA_TMP");
+
+        const results = await db.statementExecPromisified(statement, []);
+
+        console.log(results);
+
+        //let result = JSON.stringify({results})
+
+        return res.type("application/json").status(200).send(results)
+
+
+    } catch (error) {
+        return res.type("text/plain").status(500).send(`ERROR: ${e.toString()}`)
+
+    }
+
 })
 
 

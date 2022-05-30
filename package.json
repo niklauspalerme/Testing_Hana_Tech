@@ -32,6 +32,7 @@
     "mongoose": "^6.2.10",
     "node-fetch": "^3.2.4",
     "nodemon": "^2.0.15",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "sap-hdbext-promisfied": "^2.202205.1"
   }
 }
