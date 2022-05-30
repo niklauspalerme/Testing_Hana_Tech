@@ -6,6 +6,7 @@ const { Router } = require("express");
 const dbClass = require("sap-hdbext-promisfied")
 const { check } = require('express-validator');
 const { validarCampos } = require("../middlewares/validar-campos");
+const { TruncatedHanaDB } = require("../database/slmDBFunctions");
 const router = Router();
 
 
@@ -17,16 +18,8 @@ router.post('/',  async (req,res) =>{
 
 
     try {
-        
-        let db = new dbClass(req.db);
 
-        const statement = await db.preparePromisified("SELECT TOP 1 * FROM NA_CUSTOM.AMZN_VENDORCENTRAL_KC_ECOM_DLY_SALES_DIAGNOSTIC_CA_TMP");
-
-        const results = await db.statementExecPromisified(statement, []);
-
-        console.log(results);
-
-        //let result = JSON.stringify({results})
+        const results = await TruncatedHanaDB(req.db)
 
         return res.type("application/json").status(200).send(results)
 
@@ -70,6 +63,6 @@ router.patch('/', usuarioPath);
 
 
 /////////////////////////////////////////////////////////////
-// Exportamos
+// Exports
 
 module.exports = router
