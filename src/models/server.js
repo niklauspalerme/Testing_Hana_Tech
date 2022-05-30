@@ -5,6 +5,7 @@
 const express = require('express');
 const cors = require('cors');
 const hdbext = require('@sap/hdbext');
+const { config } = require('dotenv');
 //const { dbConnection } = require('../database/config')
 
 
@@ -24,15 +25,18 @@ class Server {
         //Express
         this.app = express();
 
+        // Accedemos al ENV
+        config();
+
         //Path de las rutas
         this.slmPath = '/api/v1/movePricingData';
 
         // Hana Configuration
         this.hanaConfig= {
-            host     : 'dev-hana.kcc.com',
-            port     : '30115',
-            user     : 'APP_API_KCNA_SALES_C',
-            password : 'Doos2aN$jef'
+            host     : process.env.HANNA_HOST,
+            port     : process.env.HANNA_PORT,
+            user     : process.env.HANNA_USER,
+            password : process.env.HANNA_PASSWORD
           };
 
         //Middlewares
