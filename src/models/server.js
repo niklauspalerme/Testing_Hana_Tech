@@ -30,6 +30,7 @@ class Server {
 
         //Path de las rutas
         this.slmPath = '/api/v1/movePricingData';
+        this.microservices = '/api/v1/microservices';
 
         // Hana Configuration
         this.hanaConfig= {
@@ -76,6 +77,9 @@ class Server {
 
         //POST --> http://localhost:3000/api/v1/movePricingData
         this.app.use(this.slmPath, require('../routes/slm'));
+
+        //GET --> 
+        this.app.use(this.microservices, require('../routes/microservices'));
 
     }
 

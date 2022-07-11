@@ -3,5 +3,10 @@ HANNA_HOST=
 HANNA_PORT=
 HANNA_USER=
 HANNA_PASSWORD=
+microcall_certificate_password=
+microcall_certificate_host=dev1.origin.slmtool-pricingservice.kcc.com
+microcall_certificate_clientId=
+microcall_certificate_clientSecret=
+
 MONGODB_CNN=mongodb+srv://nicoroot:12345@cluster0.anjd2.mongodb.net/cafeDB
 MONGODB_LOCAL=mongodb://localhost:27017/cafeDB

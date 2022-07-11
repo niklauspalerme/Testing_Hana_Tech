@@ -1,192 +1,16 @@
 /////////////////////////////////////////////////////////////
 // Imports & Requeriments
 
-const { RequestPPG } = require("../database/Microservice_PPG");
-const {RequestEPH}= require("../database/Microservice_EPH");
-const { TruncatedHanaDB, insertHanaDB, getHanaPPGTable, getHanaEPHTable, TruncatedHanaDbEPH, insertHanaDbEPH } = require("../database/slmDBFunctions");
 
-
-
-
-
-/////////////////////////////////////////////////////////////
-// Controllers Functions
-
-
-//1
-const postPPG = async (req,res) =>{
-
-
-    try {
-
-        // PPG Part 
-        await TruncatedHanaDB(req.db)
-        let results = await  RequestPPG();
-        await  insertHanaDB (req.db, results.data)
-        console.log("Step #4 - PPG Part Done");
-
-        //EPH Part
-        await TruncatedHanaDbEPH(req.db);
-        let results2= await RequestEPH();
-        await insertHanaDbEPH (req.db, results2.data)
-        console.log("Step #8 - EPH Part Done");
-
-        return res.status(200).json({
-          "Message": "Process is DONE for PPG & EPH "    
-        })
-
-        //return res.status(200).type("application/json").send(results.data);
-
-
-    } catch (error) {
-
-        return res.status(500).json({"Error en la API: ": error})
-
-    }
-
-}
-
-
-//2
-const getDataPPG = async (req,res) =>{
-
-
-  try {
-
-      let response = await RequestPPG();
-      res.status(200).json(response)
-
-
-  } catch (error) {
-
-      return res.status(500).json({"Error en la API: ": error})
-
-  }
-
-}
-
-//3
-const getDataEPH = async (req,res) =>{
-
-
-  try {
-
-      let response = await RequestEPH();
-        
-
-      res.status(200).json(response)
-
-
-  } catch (error) {
-
-      return res.status(500).json({"Error en la API: ": error})
-
-  }
-
-}
-
-
-//
-const getDataHanaPPG = async (req,res) =>{
-
-
-  try {
-
-      let response = await  getHanaPPGTable(req.db);
-
-      res.status(200).json(response)
-
-
-  } catch (error) {
-
-      return res.status(500).json({"Error en la API: ": error})
-
-  }
-
-}
-
-
-//
-const getDataHanaEPH = async (req,res) =>{
-
-
-  try {
-
-      let response = await getHanaEPHTable(req.db);
-      res.status(200).json(response)
-
-
-  } catch (error) {
-
-      return res.status(500).json({"Error en la API: ": error})
-
-  }
-
-}
-
-
-
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+const https = require('https');
+const myHeaders = new Headers();
+const { config } = require('dotenv');
 
 
 /////////////////////////////////////////////////////////////
-// Imports & Requeriments
+// Functions 
 
-module.exports = {
-  postPPG,
-  getDataHanaPPG,
-  getDataHanaEPH,
-  getDataEPH,
-  getDataPPG
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
 const RequestPPG = async () => {
 
   try {
@@ -244,10 +68,12 @@ const RequestPPG = async () => {
     ////////////////////
     // Fetch
 
-    const response = await fetch(process.env.MICROCALL_CERTIFICATE_HOST, requestOptions)
+    const response = await fetch(process.env.MICROCALL_CERTIFICATE_HOST_PPG, requestOptions)
       .then(response => response.json())
       .then(result => result)
       //.catch(error => console.log('Error Fetch', error));
+
+    console.log("Step #2 - Request Hecho a PPG");
 
       return response
     
@@ -257,6 +83,16 @@ const RequestPPG = async () => {
   }
 
 }
+
+
+/////////////////////////////////////////////////////////////
+// Exports
+
+
+module.exports={
+  RequestPPG
+}
+
 
 
 
@@ -312,13 +148,7 @@ const RequestPPG = async () => {
     return response
 
 }
-
-
-
-
-module.exports={
-  RequestPPG
-}
-
-
 */
+
+
+

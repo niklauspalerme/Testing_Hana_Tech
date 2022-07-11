@@ -6,18 +6,20 @@ const { Router } = require("express");
 const dbClass = require("sap-hdbext-promisfied")
 const { check } = require('express-validator');
 const { validarCampos } = require("../middlewares/validar-campos");
+const { TruncatedHanaDB, insertHanaDB } = require("../database/slmDBFunctions");
 const { RequestPPG } = require("../database/Microservice_PPG");
-const { postPPG, getDataHanaPPG, getDataHanaEPH } = require("../controllers/slmController");
+const { postPPG, getDataPPG, getDataEPH } = require("../controllers/slmController");
 const router = Router();
 
 
 /////////////////////////////////////////////////////////////
-//Routes & Methods 
+// Implementation
 
 
-router.post('/',  postPPG);
-router.get ('/hana/ppg', getDataHanaPPG);
-router.get('/hana/eph', getDataHanaEPH);
+//Get data from Services
+router.get('/ppg', getDataPPG);
+
+router.get('/eph', getDataEPH);
 
 
 /////////////////////////////////////////////////////////////
